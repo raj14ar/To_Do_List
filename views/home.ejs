@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= title %>
+    </title>
+    <script src="https://kit.fontawesome.com/7f670197ee.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <div id="main">
+        <h1 id="page-heading">
+            <i class="fas fa-tasks"></i>
+            TODO App
+        </h1>
+<!-- -----------------------------------Input task form------------------------------------------------------------------ -->
+        <form action="/add-task" method="POST" id="input-form">
+            <div class="first-container">
+                <div class="sub-heading">
+                    <p>DESCRIPTION</p>
+                </div>
+                <input type="text" id="task-name" name="description" required placeholder="What do you need to do?">
+            </div>
+            <div id="container">
+                <div id="category-container">
+                    <div class="sub-heading">
+                        <p>CATEGORY</p>
+                    </div>
+                    <div>
+                        <select name="category" id="category" class="input-field" >
+                            <option value="" class="text-color">Choose a category</option>
+                            <option value="Personal" class="text-color">Personal</option>
+                            <option value="Work" class="text-color">Work</option>
+                            <option value="School" class="text-color">School</option>
+                            <option value="Cleaning" class="text-color">Cleaning</option>
+                            <option value="Other" class="text-color">Other</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="date-container">
+                    <div class="sub-heading">
+                        <p>DUE DATE</p>
+                    </div>
+                    <div>
+                        <input type="date" id="date" name="date" required class="input-field">
+                    </div>
+                </div>
+            </div>
+<!-- -----------------------------------------Add task button---------------------------------------------------- -->
+            <div id="third-row-container">
+                <div class="content-button">
+                    <button type="submit" id="add">
+                        <i class="fas fa-plus"></i>
+                        ADD TASK
+                    </button>
+                </div>
+            </div>
+        </form>
+
+
+<!-- --------------------------------Start of task view box---------------------------------------------- -->
+
+
+        <div id="view-box">
+            <% for(let i of to_do_list) { %>
+            <div class="box">
+                <table id="view-content">
+                    <tr>
+                        <td id="view-category-container">
+                            <% if(i.category=="Work"){ %>
+                            <div id="task-category-box" class="rebeccapurple text-style">
+                                <p id="task-category"><%= i.category %></p>
+                            </div>
+                            <% } else if(i.category=="Personal") {%>
+                                <div id="task-category-box" class="royalblue text-style">
+                                    <p id="task-category"><%= i.category %></p>
+                                </div>
+                            <% } else if(i.category=="Cleaning") {%>
+                                <div id="task-category-box" class="lightgreen text-style">
+                                    <p id="task-category"><%= i.category %></p>
+                                </div>
+                            <% } else if(i.category=="School") {%>
+                                <div id="task-category-box" class="goldenrod text-style">
+                                    <p id="task-category"><%= i.category %></p>
+                                </div>
+                            <% } else if(i.category=="Other") {%>
+                                <div id="task-category-box" class="lightslategrey text-style">
+                                    <p id="task-category"><%= i.category %></p>
+                                </div>
+                            <% } else {%>
+                                <div id="task-category-box" class="lightcoral text-style">
+                                    <p id="task-category"><%= i.category %></p>
+                                </div>
+                                <% } %>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="desc">
+                            <% if(i.isCompleted){ %>
+                            <div class="text-style white" style="text-decoration: line-through;">
+                                <h4><%= i.description %></h4>
+                                <i class="far fa-calendar-alt"></i>
+                                <p style="display: inline;"><%= i.date %></p>
+                            </div>
+                            <% } else {%>
+                            <div class="text-style black">
+                                <h4><%= i.description %></h4>
+                                <i class="far fa-calendar-alt"></i>
+                                <p style="display: inline;"><%= i.date %></p>
+                            </div>
+                            <% } %>
+                        </td>
+                    </tr>
+<!-- ---------------------------------Delete and Done button------------------------------------- -->
+                    <tr>
+                        <td id="button-container">
+                            <% if(i.isCompleted){ %>
+                            <div id="done-container">
+                                <a href="/completed/?id=<%= i._id %>" class="button" id="done">
+                                    <i class="fas fa-check-circle"></i>
+                                    Undone
+                                </a>
+                            </div>
+                            <% } else {%>
+                                <div id="done-container" >
+                                    <a href="/completed/?id=<%= i._id %>" class="button" id="done">
+                                        <i class="fas fa-check-circle"></i>
+                                        Done
+                                    </a>
+                                </div>
+                            <% } %>
+                            <div>
+                                <a href="/delete-task/?id=<%= i._id %>" class="button" onclick="script">
+                                    <i class="far fa-trash-alt"></i>
+                                    DELETE TASKS
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <% } %>
+        </div>
+
+
+    </div>
+    <script type="text/javascript" src="/js/script.js"></script>
+</body>
+
+</html>
